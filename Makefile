@@ -30,9 +30,9 @@ endif
 # Choose a compiler & its options
 #--------------------------------------------------------------------------
 
-CXX  = g++
-LINK = g++
-OPTS = -std=c++11 -MMD -W -O3 -Wno-deprecated -Wno-unused-parameter
+CXX  = /usr/bin/clang++ #g++
+LINK = /usr/bin/clang++ #g++
+OPTS = -std=c++11 -MMD -W -O3 -Wno-deprecated -Wno-unused-parameter -fno-pie
 
 #--------------------------------------------------------------------
 # Xlib and OpenGL
@@ -62,7 +62,7 @@ else
   endif
 endif
 
-	
+
 #--------------------------------------------------------------------
 # Put all together
 #--------------------------------------------------------------------
@@ -76,8 +76,8 @@ GUI_SRCS=$(wildcard $(addsuffix /*.cpp,$(GUIS)))
 GUI_OBJS=${GUI_SRCS:.cpp=.o}
 LIB = $(X_LIB) $(GL_LIB) $(TRI_LIB)
 
-CFLAGS   = $(OPTS) $(INCLUDE) 
-CXXFLAGS = $(CFLAGS) 
+CFLAGS   = $(OPTS) $(INCLUDE)
+CXXFLAGS = $(CFLAGS)
 
 
 .PHONY: all

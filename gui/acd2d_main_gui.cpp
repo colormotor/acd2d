@@ -247,7 +247,8 @@ void createPolys(const string& filename, cd_2d& cd)
 			}
 			else break;
         }
-		
+
+		cout << "normalization " << poly.front().getRadius() << endl;
 		poly.normalize();
 		cd.addPolygon(poly);
 

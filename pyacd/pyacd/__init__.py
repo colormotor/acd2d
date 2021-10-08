@@ -11,7 +11,7 @@ except NameError:
     path = os.path.join(os.getcwd(), 'pyacd/pyacd')
 
 def save_poly(S, fname):
-    S = geom.fix_shape_winding(S, cw=True)
+    S = geom.fix_shape_winding(S, cw=False)
     holes = geom.get_holes(S)
     m = len(S)
     res = '%d\n'%m
@@ -73,6 +73,11 @@ def decompose(S,
                          shell=True,
                          stdout=subprocess.PIPE)
     stdout = res.stdout.decode("utf-8")
+    if 'ERROR' in stdout:
+        #print(stdout)
+        print('Failed')
+        return S
+
     if verbose:
         print(stdout)
     lines = stdout.split('\n')
@@ -82,18 +87,23 @@ def decompose(S,
     return [P*norm for P in decomp]
 
 
-# Sp = load_poly('./test_env/hole1.poly')
-# S = [geom.shapes.random_radial_polygon(20, 0.1, 0.5)*29] #[:,::-1]] #[:,:-1]]
-# decomp = decompose(S, alpha=1, beta=0, tau=0.2, measure='hybrid1')
+import autograff.svg as svg
 
-# #S = geom.affine_mul(geom.rect_in_rect_transform(geom.bounding_box(S),
-# #                                                geom.bounding_box(Sp)), S)
-# print('done')
-# import autograff.plut as plut
-# plut.figure(3,3)
-# plut.stroke_shape(S, 'r', closed=True)
-# #plut.draw_arrow(S[0][:,0], S[0][:,1], 'r', head_width=0.1)
-# plut.stroke_shape(decomp, 'b', closed=True)
-# #plut.draw_arrow(Sp[0][:,0], Sp[0][:,1], 'b', head_width=0.1)
-# plut.show()
-# #S = load_poly('./test_env/hole4.poly-acd0.000-hybrid1.poly')
+S = svg.load_svg('/home/colormotor/develop/edavid_workspace/edavid_colormotor/images/R.svg')
+
+Sp = load_poly('./test_env/hole1.poly')
+#S = [geom.shapes.random_radial_polygon(20, 0.1, 0.5)*29] #[:,::-1]] #[:,:-1]]
+decomp = decompose(S, alpha=1, beta=0, tau=0.2, measure='hybrid1')
+
+
+#S = geom.affine_mul(geom.rect_in_rect_transform(geom.bounding_box(S),
+#                                                geom.bounding_box(Sp)), S)
+print('done')
+import autograff.plut as plut
+plut.figure(3,3)
+plut.stroke_shape(S, 'r', closed=True)
+plut.draw_arrow(S[0][:,0], S[0][:,1], 'r', head_width=0.1)
+plut.stroke_shape(decomp, 'b', closed=True)
+#plut.draw_arrow(Sp[0][:,0], Sp[0][:,1], 'b', head_width=0.1)
+plut.show()
+#S = load_poly('./test_env/hole4.poly-acd0.000-hybrid1.poly')
